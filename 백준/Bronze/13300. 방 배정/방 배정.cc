@@ -22,7 +22,7 @@ int main(void){
     }
     int needRoom = 0;
     for(int c : student){
-        needRoom = needRoom + (c+1)/2;
+        needRoom = needRoom + (c+maxS-1)/maxS;
     }
     cout<< needRoom;
     return 0;
