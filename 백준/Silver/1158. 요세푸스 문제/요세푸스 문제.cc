@@ -1,56 +1,70 @@
-#include <iostream>
-#include <list>
+#include <bits/stdc++.h>
 
 using namespace std;
 
 int main(void){
-    // ios::sync_with_stdio(0);
-    // cin.tie(0);
+    ios::sync_with_stdio(0);
+    cin.tie(0);
 
-    list<int> l = {};
-    list<int>::iterator c = l.begin();
-    list<int> ans = {};
-    int count, many = 0;
+    
 
-    cin >> count >> many;
+    list<int> result = {};
+    list<int>::iterator rc = result.begin();
 
-    int countA = count;
-    int countB = count;
-    while(countA--){
-        l.push_front(countA+1);
-    }
+    int howm = 0;
+    int K = 0;
+    int nowc = 0;
+    int nextc = 0;
+    cin >> howm >> K;
 
-    // for(auto b : l)
-    //     cout << b;
+    int data[howm+1];
+    int next[howm+1];
+    int prev[howm+1];
 
-    // cout << '\n';
+    data[0] = -1;
+    next[0] = 1;
+    prev[0] = -1;
 
-    c= l.begin();
-
-    while(count--){
-        
-        for(int i = 0; i< many ; i++){
-            if(c == l.end()) c= l.begin();
-            c++;
-            if(c == l.end()) c= l.begin();
+    for(int i = 1; i < howm + 1; i++){
+        data[i] = i;
+        if(i != howm){
+            next[i] = i+1;
+            if(i ==1){
+                prev[i] = howm;
+            }else{
+                prev[i] = i-1;
+            }
+            
+        }        
+        else{
+            next[i] = 1;
+            prev[i] =i-1;
         }
-        if(c == l.begin()) c = l.end();
-        c--;
-        ans.push_back(*c);
-
-        c= l.erase(c);
+        
     }
 
+    while(result.size() != howm){
+        for(int j = 0; j < K; j++){
+            nextc = next[nowc];
+            nowc = nextc;
+        }
+
+        result.push_back(data[nowc]);
+
+        next[prev[nowc]] = next[nowc];
+        prev[next[nowc]] = prev[nowc];
+
+    }
     cout << '<';
     int index = 0;
-    for(auto a : ans){
-        if(index != 0) cout << ' ';
-        cout << a ;
+    for(auto c : result){
         index++;
-        if(index != countB) cout << ',';
+        cout << c;
+        if(index != howm)
+            cout << ", ";
+
     }
     cout << '>';
-        
 
     return 0;
 }
