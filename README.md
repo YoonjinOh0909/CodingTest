@@ -5,4 +5,4 @@ This is an auto push repository for Baekjoon Online Judge created with [Baekjoon
 기간을 길게 잡고 차근 차근 풀어나가기.
 
 # 빈도수
-일주일에 4~5번은 문제풀면서 공부 (이론 공부할 때는 문제 안 풀 수 있음)
+일주일에 4~5번은 문제풀면서 공부
