@@ -2,67 +2,64 @@
 
 using namespace std;
 
-#define X first
-#define Y second
-
-int n =0, m = 0;
-int board[502][502] = {0,};
-bool vis[502][502];
-
 int dx[4] = {1, 0, -1, 0};
 int dy[4] = {0, 1, 0, -1};
 
-int maxV = 0;
-int cnt = 0;
+int board[501][501] = {0,};
+bool vis[501][501] = {0,};
+
+int num, maxv = 0;
+int n,m;
+
 int main(void){
     ios::sync_with_stdio(0);
     cin.tie(0);
 
     cin >> n >> m;
 
-    for(int i =0 ; i < n; i++){
-        for(int d = 0; d < m; d++){
-            cin >> board[i][d];
+    for(int i =0; i < n; i++){
+        for(int j=0; j <m; j++){
+            cin >> board[i][j];
         }
     }
 
-    for(int i =0 ; i < n; i++){
-        for(int d = 0; d < m; d++){
-            if(board[i][d] == 1 && !vis[i][d]){ // 1로 그려져있고, 아직 방문하지 않은 곳이라면.
-                cnt++;
-                queue<pair<int,int>> Q;
+    for(int i =0; i < n; i++){
+        for(int j=0; j <m; j++){
+            //하나씩 빈 곳을 확인하면서 이동할 예정.
+            if(board[i][j] == 0 || vis[i][j]) continue; // 벽이거나 먼저 방문했던 곳이면 넘어간다.
 
-                Q.push({i,d});
-                vis[i][d] = 1; // 시작 점을 잡아주는 것.
-                int val = 0; // val은 넓이로 pop 될 때 ++ 해주면 연결된 넓이가 어느정도 되는지 확인 가능.
-
-                while(!Q.empty()){
-                    pair<int,int> cur = Q.front();
-
-                    Q.pop();
-
-                    val++;
-
-                    for(int dir = 0; dir < 4; dir++){
-                        int nx = cur.X + dx[dir];
-                        int ny = cur.Y + dy[dir];
-
-                        if(nx < 0 || ny < 0 || nx >= n || ny >= m) continue;
-                        if(board[nx][ny] != 1 || vis[nx][ny]) continue;
-
-                        Q.push({nx, ny});
-                        vis[nx][ny] = 1;
+            num++; // 만약 위 코드에 의해서 continue가 되지 않았다면 새로운 영역을 발견한 것이라 보면 됨.
+            queue<pair<int,int>> q; // 시작점을 넣을 queue 초기화.
+            vis[i][j] = true;
+            q.push({i,j});
+            int area = 0;
+            
+            while(!q.empty()){
+                pair<int,int> cur = q.front();
+                q.pop();
+                area++; // 해당 타일부터 체크를 하니깐 그 부분을 area+1 해주면 된다?
+                for(int k =0; k < 4; k++){
+                    int curX = cur.first + dx[k];
+                    int curY = cur.second + dy[k];
+                    if(curX >= n || curY >= m || curX < 0 || curY < 0){
+                        continue; // 범위를 벗어났을 때
                     }
+                    if(board[curX][curY] == 0 || vis[curX][curY]){
+                        continue; // 벽이거나 미리 방문했을 때
+                    }
+                    
+                    q.push({curX, curY}); // 다음에 들릴 곳 체크
+                    vis[curX][curY] = true;
+                    
                 }
-
-                
-                if(maxV < val) maxV = val;
-                   
-
             }
+
+            maxv = max(maxv, area);
         }
     }
 
-    cout << cnt << "\n" << maxV;
+    cout << num << "\n";
+    cout << maxv << "\n";
+
     return 0;
 }
