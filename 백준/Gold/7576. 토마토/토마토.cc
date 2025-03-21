@@ -2,81 +2,67 @@
 
 using namespace std;
 
-int board[1005][1005] = {0,};
-int vis[1005][1005] = {0,};
+int board[1002][1002] = {0,};
+int dist[1002][1002] = {0,};
 
-int m,n;
-bool iszero = false;
+#define X first
+#define Y second
 
 int dx[4] = {1, 0, -1, 0};
 int dy[4] = {0, 1, 0, -1};
-int dayCnt = 0;
+
+int m,n;
 
 int main(void){
     ios::sync_with_stdio(0);
     cin.tie(0);
 
     cin >> m >> n;
-
     queue<pair<int,int>> q;
-    for(int i =0; i < n; i++){
+
+    for(int i = 0; i < n; i++){
         for(int j = 0; j < m; j++){
             cin >> board[i][j];
-            if(board[i][j] == 0) iszero = true; // 0 있으면 true
             if(board[i][j] == 1){
                 q.push({i,j});
-                vis[i][j] = true;
             }
-        }
-    }
-
-    if(!iszero){ //만약 0이 없는 상태였다면 모두 익어있는 상태.
-        cout << 0;
-        return 0;
-    }
-
-    int dayStartq = q.size();
-    int checkCnt = 0;
-    while(!q.empty()){
-        if(dayStartq == checkCnt){ // 하루 동안 익힘이 시작되는 부분의 개수와 체크한 개수 확인.
-            dayStartq = q.size();
-            checkCnt = 0;
-            dayCnt++;
-        }
-
-        pair<int,int> cur = q.front();
-        q.pop();        
-
-        checkCnt++;
-        for(int i =0; i < 4; i++){
-            int curx = cur.first + dx[i];
-            int cury = cur.second + dy[i];
-            
-            if(curx < 0 || cury < 0 || curx >= n || cury >= m){
-                continue;
-            }
-            if(vis[curx][cury] || board[curx][cury] == -1){ // 이미 익혀있거나 벽으로 가로 막혀 있는 경우
-                continue;
-            }
-
-            q.push({curx, cury});
-        
-            board[curx][cury] = 1;
-            vis[curx][cury] = true;
-            
-        }
-    }
-
-    for(int i =0; i < n; i++){
-        for(int j = 0; j < m; j++){
             if(board[i][j] == 0){
+                dist[i][j] = -1;
+            }
+        }
+    }
+
+    while(!q.empty()){
+        auto cur = q.front(); q.pop();
+
+        for(int i = 0; i < 4; i++){
+            int nx = cur.X + dx[i];
+            int ny = cur.Y + dy[i];
+
+            if(nx < 0 || ny < 0 || nx >= n || ny >= m){
+                continue;
+            }
+            if(board[nx][ny] == -1 || dist[nx][ny] != -1){
+                continue;
+            }
+            
+            q.push({nx, ny});
+            board[nx][ny] = 1;
+            dist[nx][ny] = dist[cur.X][cur.Y] + 1;
+        }
+    }
+    
+    int ans = 0;
+    for(int i = 0; i < n; i++){
+        for(int j = 0; j < m; j++){
+            if(dist[i][j] == -1){
                 cout << "-1";
                 return 0;
             }
-        }
+            ans = max(ans, dist[i][j]);
+        }   
     }
 
-    cout << dayCnt;
-
+    cout << ans;
     return 0;
 }
