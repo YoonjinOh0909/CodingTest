@@ -15,3 +15,5 @@ This is an auto push repository for Baekjoon Online Judge created with [Baekjoon
 [텀 프로젝트](https://www.acmicpc.net/problem/9466)
 
 [히스토그램에서 가장 큰 사각형](https://www.acmicpc.net/problem/6549)
+
+[구슬탈출2](https://www.acmicpc.net/problem/13460). 푸는 방법에 있어서 잘못됨.
