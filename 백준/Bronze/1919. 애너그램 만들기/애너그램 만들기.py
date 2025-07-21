@@ -1,20 +1,14 @@
-li = [0] * 26
-
 a = input()
-b = input()
+b= input()
+a_l = len(a)
+b_l = len(b)
 
+if a_l < b_l :
+    a,b = b,a
+
+count = 0
 for a_i in a:
-    li[ord(a_i)-97] += 1
-
-for b_i in b:
-    li[ord(b_i)-97] -= 1
-
-ans = 0
-
-for a in li:
-    if a > 0 :
-        ans += a
-    if a < 0:
-        ans -= a
-
-print(ans)
+    if a_i in b:
+        count += 1
+        b = b.replace(a_i, "",1)
+print(a_l + b_l - count * 2)
